@@ -1,0 +1,23 @@
+{
+  "name": "express-graphql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "graphql": "^16.11.0"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.12.2",
+    "@as-integrations/express5": "^1.1.0",
+    "@graphql-tools/load-files": "^7.0.1",
+    "@graphql-tools/schema": "^10.0.23",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}

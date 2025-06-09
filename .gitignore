@@ -1,0 +1,23 @@
+# IDE & 시스템
+.idea/
+.vscode/
+.DS_Store
+
+# Node & Next.js
+node_modules/
+.next/
+build/
+out/
+coverage/
+logs
+*.log
+
+# 환경 변수
+.env*
+.env*.local
+
+# 기타
+.history/
+tmp/
+temp/
+data
