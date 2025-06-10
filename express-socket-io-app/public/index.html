@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <div class="centered-form">
+      <div class="centered-form__box">
+        <h2>채팅방 입장</h2>
+        <form action="/chat.html">
+          <label for="username">유저 이름</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            placeholder="유저 이름"
+            required
+          />
+
+          <label for="room">방 이름</label>
+          <input
+            type="text"
+            name="room"
+            id="room"
+            placeholder="방 이름"
+            required
+          />
+          <button type="submit">입장하기</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
