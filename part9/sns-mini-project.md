@@ -2,9 +2,60 @@
 
 ## 앱 소개
 
+- SNS에서 기본적으로 사용되는 기능들을 만들면서 Node.js 학습
+
+- 게시판/댓글 생성, 좋아요 , 친구 추가/삭제, 이미지 업로드
+
 <br />
 
 ## 앱 기본 구조 생성
+
+- 미니 프로젝트 1을 사용 -> express-passport-app
+
+- 패키지 설치
+
+  - connect-flash: 플래시 메시지를 위한 메들웨어 모듈
+
+  - method-override: HTML Form 태그에서 DELETE, PUT을 사용할 수 있게 지원해주는 모듈
+
+  - multer: 파일 업로드를 위한 모듈
+
+  ```shell
+  npm i connect-flash method-override multer
+  ```
+
+<br />
+
+- 각 페이지를 위한 템플릿 작성(기존 템플릿 제거)
+
+- API 요청을 처리하기 위한 폴더와 파일 생성 -> routes 폴더 안의 파일 추가
+
+  ```js
+  const postsRouter = require("./routes/posts.route");
+  const commentsRouter = require("./routes/comments.route");
+  const profileRouter = require("./routes/profile.route");
+  const likesRouter = require("./routes/likes.route");
+  const friendsRouter = require("./routes/friends.route");
+
+  app.use("/posts", postsRouter);
+  app.use("/posts/:id/comments", commentsRouter);
+  app.use("/profile/:id", profileRouter);
+  app.use("friends", friendsRouter);
+  app.use("/posts/:id/like", likesRouter);
+  ```
+
+  ```js
+  // /posts로 경로 수정
+  function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+      return res.redirect("/posts");
+    }
+
+    next();
+  }
+  ```
+
+- Model 관련 파일 생성
 
 <br />
 
