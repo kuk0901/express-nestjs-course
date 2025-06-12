@@ -61,13 +61,195 @@
 
 ## 로그인, 회원가입 페이지 생성
 
+- signup.ejs / login.ejs 파일 작성
+
 <br />
 
 ## Header, Footer
 
+- bootstrap5 / font-awesome cdn 사용
+
+- ejs 언어를 사용해 header/footer include
+
+- auth-wrapper 클래스의 css 작성
+
 <br />
 
 ## 모델 생성
+
+- User
+
+  - 기존 모델에서 필드만 추가
+
+  ```js
+  const userSchema = mongoose.Schema(
+    {
+      email: {
+        type: String,
+        unique: true
+      },
+      password: {
+        type: String,
+        minLength: 5
+      },
+      googleId: {
+        type: String,
+        unique: true,
+        sparse: true // googleId가 있는 경우에만 unique 제약 적용
+      },
+      kakaoId: {
+        type: String,
+        unique: true,
+        sparse: true // kakaoId가 있는 경우에만 unique 제약 적용
+      },
+      username: {
+        type: String,
+        required: true,
+        trim: true
+      },
+      firstName: {
+        type: String,
+        default: "First Name"
+      },
+      lastName: {
+        type: String,
+        default: "Last Name"
+      },
+      bio: {
+        type: String,
+        default: "데이터 없음"
+      },
+      hometown: {
+        type: String,
+        default: "데이터 없음"
+      },
+      workspace: {
+        type: String,
+        default: "데이터 없음"
+      },
+      education: {
+        type: String,
+        default: "데이터 없음"
+      },
+      contact: {
+        type: String,
+        default: "데이터 없음"
+      },
+      friends: [{ type: String }],
+      friendsRequests: [{ type: String }]
+    },
+    { timestamps: true }
+  );
+  ```
+
+<br />
+
+- Post
+
+  ```js
+  const mongoose = require("mongoose");
+
+  const postSchema = mongoose.Schema(
+    {
+      description: String,
+      comments: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Comment"
+        }
+      ],
+      author: {
+        id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User"
+        },
+        username: String
+      },
+      image: {
+        type: String
+      },
+      likes: [{ type: String }]
+    },
+    {
+      timestamps: true
+    }
+  );
+
+  module.exports = mongoose.model("Post", postSchema);
+  ```
+
+<br />
+
+- Comment
+
+  ```js
+  const mongoose = require("mongoose");
+
+  const commentSchema = mongoose.Schema(
+    {
+      text: String,
+      author: {
+        id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User"
+        },
+        username: String
+      }
+    },
+    {
+      timestamps: true
+    }
+  );
+
+  module.exports = mongoose.model("Comment", commentSchema);
+  ```
+
+<br />
+
+- OAuth 로그인을 할 경우 username을 DB에 넣을 수 있도록 코드 수정
+
+  ```js
+  // Google OAuth Strategy
+  const googleStrategyConfig = new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_ID_SECRET,
+      callbackURL: "/auth/google/callback",
+      scope: ["profile", "email"]
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      console.log("GoogleStrategy called");
+
+      try {
+        const existingUser = await User.findOne({ googleId: profile.id });
+
+        if (existingUser) {
+          return done(null, existingUser);
+        }
+
+        const user = new User({
+          email: profile.emails[0].value,
+          googleId: profile.id,
+          username: profile.displayName,
+          firstName: profile.name.givenName,
+          lastName: profile.name.familyName
+        });
+
+        await user.save();
+
+        return done(null, user);
+      } catch (error) {
+        return done(error);
+      }
+    }
+  );
+  ```
+
+> DB 연결을 위해 MongoDB Atlas에 ip 주소 등록
+
+<br />
+
+- 로그인 성공 시 posts 경로로 이동 -> posts 경로에 왔을 때 posts/index.ejs 보여줌
 
 <br />
 

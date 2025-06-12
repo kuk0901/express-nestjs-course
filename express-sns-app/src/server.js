@@ -42,7 +42,7 @@ app.use(function (req, res, next) {
 });
 
 // 정적 파일(이미지, CSS, JS 등)을 제공하는 미들웨어
-app.use("/static", express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 // JSON 형식의 요청 본문(body)을 파싱하는 미들웨어
 app.use(express.json());
 // URL-encoded 형식의 요청 본문을 파싱하는 미들웨어 (form 데이터 처리)

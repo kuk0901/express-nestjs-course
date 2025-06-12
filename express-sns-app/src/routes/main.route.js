@@ -10,11 +10,11 @@ mainRouter.get("/", checkAuthenticated, (req, res) => {
 });
 
 mainRouter.get("/login", checkNotAuthenticated, (req, res) => {
-  res.render("login");
+  res.render("auth/login");
 });
 
 mainRouter.get("/signup", checkNotAuthenticated, (req, res) => {
-  res.render("signup");
+  res.render("auth/signup");
 });
 
 module.exports = mainRouter;

@@ -40,8 +40,8 @@ usersRouter.post("/signup", async (req, res) => {
   // user 컬렉션에 저장
   try {
     await user.save();
-    sendEmail("kuk15955@gmail.com", "야호", "welcome");
-    res.redirect("/login");
+    // sendEmail("kuk15955@gmail.com", "야호", "welcome");
+    res.redirect("/posts");
   } catch (error) {
     console.error(error);
   }
@@ -52,7 +52,7 @@ usersRouter.get(
   "/google/callback",
   passport.authenticate("google", {
     successReturnToOrRedirect: "/",
-    failureRedirect: "/login"
+    failureRedirect: "/posts"
   })
 );
 usersRouter.get("/kakao", passport.authenticate("kakao"));
@@ -60,7 +60,7 @@ usersRouter.get(
   "/kakao/callback",
   passport.authenticate("kakao", {
     successReturnToOrRedirect: "/",
-    failureRedirect: "/login"
+    failureRedirect: "/posts"
   })
 );
 module.exports = usersRouter;
