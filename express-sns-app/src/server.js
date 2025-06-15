@@ -3,9 +3,11 @@ const path = require("path");
 const { default: mongoose } = require("mongoose");
 const passport = require("passport");
 const app = express();
-
 const cookieSession = require("cookie-session");
 const config = require("config");
+const flash = require("connect-flash");
+const methodOverride = require("method-override");
+
 const mainRouter = require("./routes/main.route");
 const usersRouter = require("./routes/users.route");
 const postsRouter = require("./routes/posts.route");
@@ -18,6 +20,7 @@ const serverConfig = config.get("server");
 
 require("dotenv").config();
 
+// 미들웨어 설정 라인
 app.use(
   cookieSession({
     name: "cookie-session-name",
@@ -40,7 +43,6 @@ app.use(function (req, res, next) {
 
   next();
 });
-
 // 정적 파일(이미지, CSS, JS 등)을 제공하는 미들웨어
 app.use(express.static(path.join(__dirname, "public")));
 // JSON 형식의 요청 본문(body)을 파싱하는 미들웨어
@@ -51,6 +53,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize());
 // 로그인 세션을 관리하는 미들웨어 (로그인 상태 유지)
 app.use(passport.session());
+// connect-flash 미들웨어 등록
+app.use(flash());
+// method-override 미들웨어 등록
+app.use(methodOverride("_method"));
+
+// passport 설정
 require("./config/passport");
 
 // 뷰 엔진을 EJS로 설정
@@ -67,6 +75,20 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+// 에러 처리기
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.send(err.message || "Error Occurred");
+});
+
+// res.locals 사용해 flash 처리
+app.use((req, res, next) => {
+  res.locals.error = req.flash("error");
+  res.locals.success = req.flash("success");
+  res.locals.currentUser = req.user;
+  next();
+});
 
 // 라우터 설정
 app.use("/", mainRouter);

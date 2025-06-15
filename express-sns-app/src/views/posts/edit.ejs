@@ -1,0 +1,17 @@
+<%- include('../partials/header.ejs') %>
+<div class="container col-lg-8">
+  <div class="card">
+    <h5 class="card-header">포스트 수정하기</h5>
+    <div class="card-body">
+      <form action="/posts/<%= post._id %>?_method=PUT" method="post">
+        <div class="form-group">
+          <textarea name="description" id="desc" class="form-control">
+<%= post.description %></textarea
+          >
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">수정하기</button>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include('../partials/footer.ejs') %>

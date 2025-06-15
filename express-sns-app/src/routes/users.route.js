@@ -19,7 +19,7 @@ usersRouter.post("/login", (req, res, next) => {
         return next(err);
       }
 
-      res.redirect("/");
+      res.redirect("/posts");
     });
   })(req, res, next);
 });
@@ -41,7 +41,7 @@ usersRouter.post("/signup", async (req, res) => {
   try {
     await user.save();
     // sendEmail("kuk15955@gmail.com", "야호", "welcome");
-    res.redirect("/posts");
+    res.redirect("/login");
   } catch (error) {
     console.error(error);
   }
@@ -51,16 +51,16 @@ usersRouter.get("/google", passport.authenticate("google"));
 usersRouter.get(
   "/google/callback",
   passport.authenticate("google", {
-    successReturnToOrRedirect: "/",
-    failureRedirect: "/posts"
+    successReturnToOrRedirect: "/posts",
+    failureRedirect: "/login"
   })
 );
 usersRouter.get("/kakao", passport.authenticate("kakao"));
 usersRouter.get(
   "/kakao/callback",
   passport.authenticate("kakao", {
-    successReturnToOrRedirect: "/",
-    failureRedirect: "/posts"
+    successReturnToOrRedirect: "/posts",
+    failureRedirect: "/login"
   })
 );
 module.exports = usersRouter;
